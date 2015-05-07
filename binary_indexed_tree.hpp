@@ -29,7 +29,7 @@ namespace ys
 				if (!i) return;
 				const size_t l(data_.size());
 				while (i < l) {
-					data_[i] += v;		// 該当区間に加算
+					data_[i] += v;		// 該当パスに加算
 					i += i & (~i + 1);	// i の最下位の桁を繰り上げ
 				}
 			}
@@ -40,7 +40,7 @@ namespace ys
 				TYPE v((TYPE)0);
 
 				while (i) {
-					v += data_[i];	// 部分区間を加算
+					v += data_[i];	// 部分パスを加算
 					i &= i - 1;		// i の最下位ビットを0に変更
 				}
 
