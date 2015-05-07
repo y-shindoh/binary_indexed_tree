@@ -27,7 +27,9 @@ namespace ys
 			TYPE v)
 			{
 				if (!i) return;
+
 				const size_t l(data_.size());
+
 				while (i < l) {
 					data_[i] += v;		// 該当パスに加算
 					i += i & (~i + 1);	// i の最下位の桁を繰り上げ
@@ -92,6 +94,7 @@ namespace ys
 				assert(from <= to);
 				assert(from < data_.size());
 				assert(to < data_.size());
+
 				return get(to) - get(from);
 			}
 	};
