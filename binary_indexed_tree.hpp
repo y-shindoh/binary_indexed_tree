@@ -64,6 +64,7 @@ namespace ys
 		 * @param[in]	data	各エッジのコストの配列
 		 * @param[in]	length	引数 @a data の長さ
 		 * @note	引数 @a data は各エッジの終点ノードをインデックスと考える。
+		 * @note	計算量は O(n log n) となる。
 		 */
 		void
 		prepare(const TYPE* data,
@@ -86,6 +87,7 @@ namespace ys
 		 * @param[in]	to	最後のエッジの終点ノード
 		 * @return	総コスト
 		 * @note	本メソッド実施前に @a prepare() を実行すること。
+		 * @note	計算量は O(log n) となる。
 		 */
 		TYPE
 		sum(size_t from,
