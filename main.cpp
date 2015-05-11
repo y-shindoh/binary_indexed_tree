@@ -33,5 +33,7 @@ int main()
 		print<int>(input[i][0], input[i][1], bit);
 	}
 
+	delete bit;
+
 	return 0;
 }
