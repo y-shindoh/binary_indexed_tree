@@ -14,6 +14,7 @@ namespace ys
 {
 	/**
 	 * @class	binary inde treeのテンプレート・クラス
+	 * @note	テンプレートの型 @a TYPE には整数・浮動小数点型を指定すること。
 	 */
 	template<typename TYPE>
 	class BinaryIndexedTree
@@ -24,7 +25,7 @@ namespace ys
 
 		void
 		add(size_t i,
-			TYPE v)
+			const TYPE& v)
 			{
 				if (!i) return;
 
