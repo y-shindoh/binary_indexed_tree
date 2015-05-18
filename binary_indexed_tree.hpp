@@ -6,6 +6,9 @@
  * @note	http://anctgcc.hatenablog.com/entry/2014/12/03/194140 を参考に実装した。
  */
 
+#ifndef	__BINARY_INDEXED_TREE_HPP__
+#define	__BINARY_INDEXED_TREE_HPP__	"binary_indexed_tree.hpp"
+
 #include <cstddef>
 #include <cassert>
 #include <vector>
@@ -102,3 +105,5 @@ namespace ys
 			}
 	};
 };
+
+#endif	// __BINARY_INDEXED_TREE_HPP__
