@@ -18,6 +18,9 @@ namespace ys
 	/**
 	 * @class	binary inde treeのテンプレート・クラス
 	 * @note	テンプレートの型 @a TYPE には整数・浮動小数点型を指定すること。
+	 * @note	各メソッドの計算量について、
+				n は size_t の値中にある1のビット数、
+				m は配列の要素数と考える。
 	 */
 	template<typename TYPE>
 	class BinaryIndexedTree
@@ -26,6 +29,22 @@ namespace ys
 
 		std::vector<TYPE> data_;	///< BIT本体
 
+	public:
+
+		/**
+		 * コンストラクタ
+		 */
+		BinaryIndexedTree()
+			{
+				;
+			}
+
+		/**
+		 * 指定区間の値を加算
+		 * @param[in]	i	区間のインデックス
+		 * @param[in]	v	加算する値
+		 * @note	最悪計算量は O(log n) となる。
+		 */
 		void
 		add(size_t i,
 			const TYPE& v)
@@ -40,9 +59,46 @@ namespace ys
 				}
 			}
 
-		TYPE
-		get(size_t i) const
+		/**
+		 * BTIの構築
+		 * @param[in]	data	各エッジのコストの配列
+		 * @param[in]	length	引数 @a data の長さ
+		 * @note	引数 @a data は各エッジの終点ノードをインデックスと考える。
+		 * @note	計算量は O(m log n) となる。
+		 * @note	引数 @a data に @a 0 を指定した場合、
+					長さ @a length が設定された全区間 @a 0 のBITが構築される。
+		 */
+		void
+		prepare(const TYPE* data,
+				size_t length)
 			{
+				assert(length);
+
+				data_.resize(length);
+
+				for (size_t i(0); i < length; ++i) {
+					data_[i] = (TYPE)0;
+				}
+
+				if (!data) return;
+
+				for (size_t i(0); i < length; ++i) {
+					add(i, data[i]);
+				}
+			}
+
+		/**
+		 * 0からのパス (連続するエッジをつなげたもの) の総コスト
+		 * @param[in]	i	最後のエッジの終点ノード
+		 * @return	総コスト
+		 * @note	本メソッド実施前に @a prepare() を実行すること。
+		 * @note	最悪計算量は O(log n) となる。
+		 */
+		TYPE
+		sum(size_t i) const
+			{
+				assert(i < data_.size());
+
 				TYPE v((TYPE)0);
 
 				while (i) {
@@ -53,45 +109,13 @@ namespace ys
 				return v;
 			}
 
-	public:
-
-		/**
-		 * コンストラクタ
-		 */
-		BinaryIndexedTree()
-			{
-				;
-			}
-
-		/**
-		 * BTIの構築
-		 * @param[in]	data	各エッジのコストの配列
-		 * @param[in]	length	引数 @a data の長さ
-		 * @note	引数 @a data は各エッジの終点ノードをインデックスと考える。
-		 * @note	計算量は O(n log n) となる。
-		 */
-		void
-		prepare(const TYPE* data,
-				size_t length)
-			{
-				data_.resize(length);
-
-				for (size_t i(0); i < length; ++i) {
-					data_[i] = (TYPE)0;
-				}
-
-				for (size_t i(0); i < length; ++i) {
-					add(i, data[i]);
-				}
-			}
-
 		/**
 		 * パス (連続するエッジをつなげたもの) の総コスト
 		 * @param[in]	from	最初のエッジの始点ノード
 		 * @param[in]	to	最後のエッジの終点ノード
 		 * @return	総コスト
 		 * @note	本メソッド実施前に @a prepare() を実行すること。
-		 * @note	計算量は O(log n) となる。
+		 * @note	最悪計算量は O(log n) となる。
 		 */
 		TYPE
 		sum(size_t from,
@@ -101,7 +125,7 @@ namespace ys
 				assert(from < data_.size());
 				assert(to < data_.size());
 
-				return get(to) - get(from);
+				return sum(to) - sum(from);
 			}
 	};
 };
