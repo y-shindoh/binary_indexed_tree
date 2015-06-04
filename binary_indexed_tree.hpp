@@ -49,7 +49,10 @@ namespace ys
 		add(size_t i,
 			const TYPE& v)
 			{
-				if (!i) return;
+				if (!i) {	// 本来は使わない
+					data_[i] += v;
+					return;
+				}
 
 				const size_t l(data_.size());
 
@@ -99,7 +102,7 @@ namespace ys
 			{
 				assert(i < data_.size());
 
-				TYPE v((TYPE)0);
+				TYPE v(data_[0]);
 
 				while (i) {
 					v += data_[i];	// 部分パスを加算
