@@ -40,6 +40,15 @@ namespace ys
 			}
 
 		/**
+		 * デストラクタ
+		 */
+		virtual
+		~BinaryIndexedTree()
+			{
+				;
+			}
+
+		/**
 		 * 指定区間の値を加算
 		 * @param[in]	i	区間のインデックス
 		 * @param[in]	v	加算する値
@@ -49,7 +58,7 @@ namespace ys
 		add(size_t i,
 			const TYPE& v)
 			{
-				if (!i) {	// 本来は使わない
+				if (i == 0) {	// 本来は使わない
 					data_[i] += v;
 					return;
 				}
@@ -63,27 +72,35 @@ namespace ys
 			}
 
 		/**
-		 * BTIの構築
+		 * BITの構築
+		 * @param[in]	length	BITの長さ
+		 * @note	長さ @a length が設定された全区間 @a 0 のBITを構築する。
+		 */
+		void
+		prepare(size_t length)
+			{
+				assert(0 < length);
+
+				if (!data_.empty()) data_.clear();
+				data_.resize(length, (TYPE)0);
+			}
+
+		/**
+		 * BITの構築
 		 * @param[in]	data	各エッジのコストの配列
 		 * @param[in]	length	引数 @a data の長さ
 		 * @note	引数 @a data は各エッジの終点ノードをインデックスと考える。
-		 * @note	計算量は O(m log n) となる。
-		 * @note	引数 @a data に @a 0 を指定した場合、
-					長さ @a length が設定された全区間 @a 0 のBITが構築される。
+		 * @note	計算量は O(n log n) となる。
 		 */
 		void
 		prepare(const TYPE* data,
 				size_t length)
 			{
-				assert(length);
+				assert(data);
+				assert(0 < length);
 
-				data_.resize(length);
-
-				for (size_t i(0); i < length; ++i) {
-					data_[i] = (TYPE)0;
-				}
-
-				if (!data) return;
+				if (!data_.empty()) data_.clear();
+				data_.resize(length, (TYPE)0);
 
 				for (size_t i(0); i < length; ++i) {
 					add(i, data[i]);
@@ -104,7 +121,7 @@ namespace ys
 
 				TYPE v(data_[0]);
 
-				while (i) {
+				while (0 < i) {
 					v += data_[i];	// 部分パスを加算
 					i &= i - 1;		// i の最下位ビットを0に変更
 				}
